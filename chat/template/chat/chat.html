@@ -1,0 +1,35 @@
+{% extends 'accounts/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load tz %}
+    {% if chat %}
+        <textarea id="chat-log" cols="100" rows="20">
+        {% for message in message %}
+            {% if message.author.username == user.username %}
+                 {{ message.author.username }}
+                {{ message.pub_date|utc }}
+                {{ message }}
+            {% else %}
+                {{ message.author.username }}
+                {{ message.pub_date|utc }}
+                {{ message }}
+            {% endif %}
+        {% endfor %}
+        </textarea>
+
+
+    <div class="col-3 row-3 focus" id="message_form">
+        <form id="message-form" class="panel " method="post" >
+            <div class="col-3 form-text d-sm-inline" size="4">{{ form | crispy}}</div>
+            {% csrf_token %}
+            <button type="submit" class="btn-danger" onclick="return 'message-form'"><span class="ico ico-comment"></span>Отправить</button>
+        </form>
+    </div>
+        {% for member in chat.members.all %}
+             {% if member.username != user.username  %}
+                 <h4>Chat with {{ member.username }}</h4>
+             {% endif %}
+        {% endfor %}
+        <a href="{% url 'list_messages' chat.id %}">ALL DIALOG</a>
+{% endif %}
+{% endblock content %}

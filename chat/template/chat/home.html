@@ -1,0 +1,17 @@
+
+{% extends 'accounts/base.html' %}
+{% block content %}
+    <body>
+    <div>
+     {% if user.is_authenticated %}
+        <p class="ml-4">Hi {{ user.username }}!</p>
+          <p class="ml-4"><a href="{% url 'logout' %}">Log out</a></p>
+      {% endif %}
+        <div class="nav-left">
+          <h2><a class="ml-4 mb-2" href="{% url 'dialogs' %}">Chats</a></h2>
+          <h2><a class="ml-4" href="{% url 'search_user' %}">Search User</a></h2>
+        </div>
+    </div>
+  </body>
+{% endblock content %}
+

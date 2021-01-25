@@ -1,0 +1,32 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+
+<div class="panel">
+
+        {% load tz %}
+        {% if chats.count == 0 %}
+        {% endif %}
+        {% for chat in chats %}
+            {% if chat.message_set.count != 0 %}
+                {% with last_message=chat.message_set.last %}
+                    <a href="{{ chat.id }}" class="list-group-item">
+                        <div class="reply-body">
+                            <ul class="list-inline">
+                                <li class="drop-left-padding">
+                                    <strong class="list-group-item-heading">
+                                    {% for member in chat.members.all %}
+                                        {% if member.username != user.username  %}
+                                            {{ member.username }}
+                                        {% endif %}
+                                    {% endfor %}</strong>
+                                </li>
+                                <li class="pull-right text-muted"><small>{{ last_message.pub_date|utc }}</small></li>
+                            </ul>
+                                <div>{{ last_message.message|truncatechars_html:"200"|safe|striptags }}</div>
+                        </div>
+                    </a>
+                {% endwith %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock content %}
